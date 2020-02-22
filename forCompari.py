@@ -3,12 +3,11 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QAxContainer import *
 
-
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        # Kiwoom login
+        # Kiwoom Login
         self.kiwoom = QAxWidget("KHOPENAPI.KHOpenAPICtrl.1")
         self.kiwoom.dynamicCall("CommConnect()")
 
@@ -50,14 +49,11 @@ class MyWindow(QMainWindow):
 
     def receive_trdata(self, screen_no, rqname, trcode, recordname, prev_next, data_len, err_code, msg1, msg2):
         if rqname == "opt10001_req":
-            name = self.kiwoom.dynamicCall("CommGetData(QString, QString, QString, int, QString)", trcode, "", rqname,
-                                           0, "PER")
-            volume = self.kiwoom.dynamicCall("CommGetData(QString, QString, QString, int, QString)", trcode, "", rqname,
-                                             0, "유통비율")
+            name = self.kiwoom.dynamicCall("CommGetData(QString, QString, QString, int, QString)", trcode, "", rqname, 0, "종목명")
+            volume = self.kiwoom.dynamicCall("CommGetData(QString, QString, QString, int, QString)", trcode, "", rqname, 0, "거래량")
 
-            self.text_edit.append("PER: " + name.strip())
-            self.text_edit.append("유통비율: " + volume.strip())
-
+            self.text_edit.append("종목명: " + name.strip())
+            self.text_edit.append("거래량: " + volume.strip())
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
